@@ -6,7 +6,7 @@ En este proyecto se implemento una arquitectura serverless en AWS para recibir, 
 
 El sistema permite que un cliente envíe una imagen mediante una solicitud `POST /upload`. La imagen es recibida por API Gateway, procesada inicialmente por una función Lambda y almacenada en Amazon S3 dentro del prefijo `uploads/`. Luego, S3 genera un evento `ObjectCreated` que envía un mensaje a una cola SQS. Esta cola activa una segunda función Lambda encargada de procesar el archivo y guardar el resultado en el prefijo `processed/`.
 
-El objetivo académico del proyecto es comprender el ciclo completo de vida de una infraestructura en AWS: diseño, despliegue, prueba, monitoreo y destrucción de recursos mediante Terraform.
+El objetivo es comprender el ciclo completo de vida de una infraestructura en AWS: diseño, despliegue, prueba, monitoreo y destrucción de recursos mediante Terraform.
 
 ---
 
@@ -83,7 +83,7 @@ Algunos valores del diagrama original fueron ajustados para evitar costos innece
 | CloudWatch Logs | 14 días | 7 días | Suficiente para evidencia y depuración |
 | NAT Gateway / VPC Endpoints | Incluidos en el diagrama | No desplegados en esta versión | Se omitieron para evitar costos por hora en laboratorio |
 
-Estas modificaciones mantienen la lógica principal del sistema, pero adaptan la infraestructura a un entorno académico y de bajo costo.
+Estas modificaciones mantienen la lógica principal del sistema, pero adaptan a la infraestructura y de bajo costo.
 
 ---
 
@@ -144,37 +144,6 @@ aws-lambda-integration/
     ├── events.tf
     ├── cloudwatch.tf
     └── .terraform.lock.hcl
-```
-
----
-
-## Variables principales
-
-Archivo:
-
-```text
-terraform/terraform.tfvars
-```
-
-Variables principales:
-
-```hcl
-project_name = "image-processor"
-environment  = "dev"
-aws_region   = "us-east-1"
-
-upload_prefix    = "uploads/"
-processed_prefix = "processed/"
-
-max_file_size_mb = 10
-
-api_throttle_rate_limit  = 10
-api_throttle_burst_limit = 20
-
-lambda_upload_memory  = 256
-lambda_crop_memory    = 512
-lambda_upload_timeout = 30
-lambda_crop_timeout   = 60
 ```
 
 ---
