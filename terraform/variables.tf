@@ -71,3 +71,81 @@ variable "lambda_crop_timeout" {
   type        = number
   default     = 60
 }
+
+variable "uploads_expiration_days" {
+  description = "Días para expirar imágenes originales en uploads/"
+  type        = number
+  default     = 1
+}
+
+variable "processed_expiration_days" {
+  description = "Días para expirar imágenes procesadas en processed/"
+  type        = number
+  default     = 3
+}
+
+variable "enable_s3_force_destroy" {
+  description = "Permite destruir el bucket aunque tenga objetos dentro. Útil para laboratorio académico."
+  type        = bool
+  default     = true
+}
+
+variable "sqs_visibility_timeout_seconds" {
+  description = "Tiempo en segundos durante el cual un mensaje queda invisible mientras Lambda lo procesa"
+  type        = number
+  default     = 360
+}
+
+variable "sqs_message_retention_seconds" {
+  description = "Tiempo de retención de mensajes en la cola principal"
+  type        = number
+  default     = 86400
+}
+
+variable "sqs_dlq_message_retention_seconds" {
+  description = "Tiempo de retención de mensajes en la DLQ"
+  type        = number
+  default     = 345600
+}
+
+variable "sqs_receive_wait_time_seconds" {
+  description = "Tiempo de long polling para reducir respuestas vacías"
+  type        = number
+  default     = 20
+}
+
+variable "sqs_max_receive_count" {
+  description = "Número máximo de intentos fallidos antes de enviar el mensaje a la DLQ"
+  type        = number
+  default     = 3
+}
+
+variable "allowed_cors_origins" {
+  description = "Orígenes permitidos para CORS"
+  type        = list(string)
+  default     = ["*"]
+}
+
+variable "allowed_cors_methods" {
+  description = "Métodos HTTP permitidos por CORS"
+  type        = list(string)
+  default     = ["POST", "OPTIONS"]
+}
+
+variable "sqs_lambda_batch_size" {
+  description = "Cantidad de mensajes que Lambda procesa por lote desde SQS"
+  type        = number
+  default     = 5
+}
+
+variable "cloudwatch_log_retention_days" {
+  description = "Días de retención para logs de CloudWatch"
+  type        = number
+  default     = 7
+}
+
+variable "enable_dlq_alarm_actions" {
+  description = "Habilita acciones de alarma para la DLQ. En laboratorio se deja false para evitar configurar SNS."
+  type        = bool
+  default     = false
+}
